@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -38,7 +38,10 @@ package org.geosdi.geoplatform.persistence.search.demo.dao.jpa.search;
 import org.geosdi.geoplatform.persistence.configuration.dao.GPBaseSearchDAO;
 import org.geosdi.geoplatform.persistence.search.demo.model.CarSearch;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+
+import static javax.annotation.meta.When.NEVER;
 
 /**
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
@@ -51,5 +54,5 @@ public interface ICarSeachDAO extends GPBaseSearchDAO<CarSearch> {
      * @return {@link List<CarSearch>}
      * @throws Exception
      */
-    List<CarSearch> findByModel(String model) throws Exception;
+    List<CarSearch> findByModel(@Nonnull(when = NEVER) String model) throws Exception;
 }

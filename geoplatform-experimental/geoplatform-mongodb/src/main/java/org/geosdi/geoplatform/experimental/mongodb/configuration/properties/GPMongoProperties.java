@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -36,16 +36,19 @@
 package org.geosdi.geoplatform.experimental.mongodb.configuration.properties;
 
 import com.mongodb.MongoCredential;
+import lombok.Getter;
+import lombok.Setter;
 import org.geosdi.geoplatform.experimental.mongodb.configuration.auth.MongoAuth;
 import org.springframework.util.StringUtils;
 
 import static com.mongodb.MongoCredential.createCredential;
 
 /**
- *
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
+@Getter
+@Setter
 public class GPMongoProperties implements MongoBaseProperties {
 
     private String mongoHost;
@@ -55,59 +58,25 @@ public class GPMongoProperties implements MongoBaseProperties {
     private MongoCredential userCredentials;
 
     @Override
-    public void setMongoHost(String theMongoHost) {
-        this.mongoHost = theMongoHost;
-    }
-
-    @Override
-    public void setMongoPort(Integer theMongoPort) {
-        this.mongoPort = theMongoPort;
-    }
-
-    @Override
-    public void setMongoAuth(MongoAuth theMongoAut) {
-        this.mongoAuth = theMongoAut;
-    }
-
-    @Override
-    public String getMongoHost() {
-        return this.mongoHost;
-    }
-
-    @Override
-    public Integer getMongoPort() {
-        return this.mongoPort;
-    }
-
-    @Override
-    public void setMongoDatabaseName(String theMongoDatabaseName) {
-        this.mongoDatabaseName = theMongoDatabaseName;
-    }
-
-    @Override
-    public String getMongoDatabaseName() {
-        return this.mongoDatabaseName;
-    }
-
-    @Override
-    public MongoAuth getMongoAuth() {
-        return this.mongoAuth;
-    }
-
-    @Override
     public MongoCredential getUserCredential() {
-        return this.userCredentials = ((this.mongoAuth != null)
-                && (this.mongoAuth.isMongoAuthEnabled()))
-                ? createCredential(mongoAuth.getMongoUserName(), this.mongoDatabaseName,
+        return this.userCredentials = ((this.mongoAuth != null) && (this.mongoAuth.isMongoAuthEnabled())) ?
+                createCredential(mongoAuth.getMongoUserName(), this.mongoDatabaseName,
                         mongoAuth.getMongoPassword().toCharArray()) : null;
     }
 
+    /**
+     * Invoked by the containing {@code BeanFactory} after it has set all bean properties
+     * and satisfied {@link org.springframework.beans.factory.BeanFactoryAware}, {@code ApplicationContextAware} etc.
+     * <p>This method allows the bean instance to perform validation of its overall
+     * configuration and final initialization when all bean properties have been set.
+     * @throws Exception in the event of misconfiguration (such as failure to set an
+     * essential property) or if initialization fails for any other reason
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(!StringUtils.hasText(mongoDatabaseName)) {
+        if (!StringUtils.hasText(mongoDatabaseName)) {
             this.mongoDatabaseName = MongoPropertiesEnum.MONGO_DBNAME.mongoProp();
         }
-
         if (!StringUtils.hasText(mongoHost)) {
             this.mongoHost = MongoPropertiesEnum.MONGO_HOST.mongoProp();
         }
@@ -116,5 +85,4 @@ public class GPMongoProperties implements MongoBaseProperties {
             this.mongoPort = MongoPropertiesEnum.MONGO_PORT.mongoProp();
         }
     }
-
 }

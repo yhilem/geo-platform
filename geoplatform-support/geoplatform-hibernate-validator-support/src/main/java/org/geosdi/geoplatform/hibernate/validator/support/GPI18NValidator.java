@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -35,16 +35,17 @@
  */
 package org.geosdi.geoplatform.hibernate.validator.support;
 
+import jakarta.validation.Configuration;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.geosdi.geoplatform.hibernate.validator.support.i18n.IGPI18NValidator;
-import org.geosdi.geoplatform.hibernate.validator.support.interpoletor.IGPI18NMessageInterpolator;
+import org.geosdi.geoplatform.hibernate.validator.support.interpolator.IGPI18NMessageInterpolator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.validation.Configuration;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import java.util.Locale;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public abstract class GPI18NValidator<P extends Object, MESSAGE extends Object> 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     //
     private final IGPI18NMessageInterpolator messageInterpolator;
-    private final javax.validation.Validator validator;
+    private final Validator validator;
 
     /**
      * @param theMessageInterpolator

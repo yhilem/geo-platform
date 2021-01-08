@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -77,7 +77,6 @@ public class WMSV111UnmarshallTest {
         wmsContext = JAXBContextConnectorRepository.getProvider(WMS_CONTEXT_KEY_V111);
     }
 
-    //
     private static final SAXParserFactory spf = SAXParserFactory.newInstance();
     private static final GPBaseJAXBContext wmsContext;
     private static File wmsGetCapabilitiesFile;
@@ -135,7 +134,8 @@ public class WMSV111UnmarshallTest {
         XMLReader xmlReader = spf.newSAXParser().getXMLReader();
         InputSource inputSource = new InputSource(new FileReader(wmsDescribeLayerFile));
         SAXSource source = new SAXSource(xmlReader, inputSource);
-        WMSDescribeLayerResponse wmsDescribeLayerResponse = (WMSDescribeLayerResponse) wmsContext.acquireUnmarshaller().unmarshal(source);
+        WMSDescribeLayerResponse wmsDescribeLayerResponse = (WMSDescribeLayerResponse) wmsContext.acquireUnmarshaller()
+                .unmarshal(source);
         logger.debug("#######################WMSDescribeLayerResponseV111 : {}\n", wmsDescribeLayerResponse);
         StringWriter writer = new StringWriter();
         wmsContext.acquireMarshaller().marshal(wmsDescribeLayerResponse, writer);

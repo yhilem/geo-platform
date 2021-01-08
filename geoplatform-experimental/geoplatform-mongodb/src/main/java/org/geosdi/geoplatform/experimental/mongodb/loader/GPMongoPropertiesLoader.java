@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -46,10 +46,7 @@ import org.springframework.context.annotation.FilterType;
  * @email giuseppe.lascaleia@geosdi.org
  */
 @Configuration
-@ComponentScan(value = {"org.geosdi.geoplatform.logger.support.spring.config",
-    "org.geosdi.geoplatform.experimental.mongodb.spring"},
-        excludeFilters = {
-            @ComponentScan.Filter(type = FilterType.ANNOTATION,
-                    value = {GPMongoConfig.class})})
+@ComponentScan(value = {"org.geosdi.geoplatform.logger.support.spring.config", "org.geosdi.geoplatform.experimental.mongodb.spring"},
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = {GPMongoConfig.class})})
 public class GPMongoPropertiesLoader {
 }

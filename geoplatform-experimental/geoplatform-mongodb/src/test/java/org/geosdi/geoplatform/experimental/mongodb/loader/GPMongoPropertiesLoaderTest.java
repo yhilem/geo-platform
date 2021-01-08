@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -33,48 +33,19 @@
  *   to your version of the library, but you are not obligated to do so. If you do not
  *   wish to do so, delete this exception statement from your version.
  */
-package org.geosdi.geoplatform.persistence.search.demo.model.experimental;
+package org.geosdi.geoplatform.experimental.mongodb.loader;
 
-import org.geosdi.geoplatform.persistence.search.demo.model.CarSearch;
-import org.hibernate.search.indexes.interceptor.EntityIndexingInterceptor;
-import org.hibernate.search.indexes.interceptor.IndexingOverride;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  *
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
-public class CarIndexInterceptor implements EntityIndexingInterceptor<CarSearch> {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Override
-    public IndexingOverride onAdd(CarSearch t) {
-        logger.info("EXECUTE onAdd ################################### "
-                + t);
-        return IndexingOverride.APPLY_DEFAULT;
-    }
-
-    @Override
-    public IndexingOverride onUpdate(CarSearch t) {
-        logger.info("EXECUTE onUpdate ################################### "
-                + t);
-        return IndexingOverride.UPDATE;
-    }
-
-    @Override
-    public IndexingOverride onDelete(CarSearch t) {
-        logger.info("EXECUTE onDelete ################################### "
-                + t);
-        return IndexingOverride.REMOVE;
-    }
-
-    @Override
-    public IndexingOverride onCollectionUpdate(CarSearch t) {
-        logger.info("EXECUTE onCollectionUpdate ######################### "
-                + t);
-        return IndexingOverride.APPLY_DEFAULT;
-    }
+@Configuration
+@Import(value = GPMongoPropertiesLoader.class)
+@ComponentScan(value = {"org.geosdi.geoplatform.experimental.mongodb.jasypt.pbe.properties"})
+public class GPMongoPropertiesLoaderTest {
 }

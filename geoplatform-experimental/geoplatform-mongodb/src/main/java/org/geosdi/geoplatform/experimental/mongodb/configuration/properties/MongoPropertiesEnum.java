@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@
 package org.geosdi.geoplatform.experimental.mongodb.configuration.properties;
 
 /**
- *
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
@@ -44,32 +43,33 @@ public enum MongoPropertiesEnum implements DefaultMongoProperty {
 
     MONGO_HOST(0) {
 
-                @Override
-                public String mongoProp() {
-                    return "localhost";
-                }
+        @Override
+        public String mongoProp() {
+            return "localhost";
+        }
 
-            },
-    MONGO_PORT(1) {
+    }, MONGO_PORT(1) {
 
-                @Override
-                public Integer mongoProp() {
-                    return 27017;
-                }
+        @Override
+        public Integer mongoProp() {
+            return 27017;
+        }
 
-            },
-    MONGO_DBNAME(2) {
+    }, MONGO_DBNAME(2) {
 
-                @Override
-                public String mongoProp() {
-                    return "test";
-                }
+        @Override
+        public String mongoProp() {
+            return "test";
+        }
 
-            };
+    };
 
     protected final int value;
 
-    private MongoPropertiesEnum(int value) {
+    /**
+     * @param value
+     */
+    MongoPropertiesEnum(int value) {
         this.value = value;
     }
 
@@ -79,5 +79,4 @@ public enum MongoPropertiesEnum implements DefaultMongoProperty {
     public int getValue() {
         return value;
     }
-
 }

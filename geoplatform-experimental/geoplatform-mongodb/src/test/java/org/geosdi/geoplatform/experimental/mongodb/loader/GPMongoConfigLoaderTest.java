@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -33,12 +33,11 @@
  *   to your version of the library, but you are not obligated to do so. If you do not
  *   wish to do so, delete this exception statement from your version.
  */
-package org.geosdi.geoplatform.experimental.mongodb.spring.jasypt.config;
+package org.geosdi.geoplatform.experimental.mongodb.loader;
 
-import org.jasypt.encryption.pbe.config.PBEConfig;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  *
@@ -46,19 +45,8 @@ import org.springframework.context.annotation.Configuration;
  * @email giuseppe.lascaleia@geosdi.org
  */
 @Configuration
-class GPMongoPBEConfig {
-
-    @Bean(name = "mongoPBEConfig")
-    public PBEConfig mongoPBEConfig() {
-        return new SimpleStringPBEConfig() {
-
-            {
-                super.setPassword("$-geosdi,0x");
-                super.setPoolSize(2);
-                super.setAlgorithm("PBEWithMD5AndDES");
-            }
-
-        };
-    }
-
+@ComponentScan(value = {"org.geosdi.geoplatform.logger.support.spring.config", "org.geosdi.geoplatform.experimental.mongodb.jasypt.pbe.properties",
+        "org.geosdi.geoplatform.experimental.mongodb.spring"})
+@ImportResource(value = {"classpath:mongoRepositories.xml", "classpath*:mongoRepositories.xml"})
+public class GPMongoConfigLoaderTest {
 }

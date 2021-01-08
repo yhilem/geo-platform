@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 package org.geosdi.geoplatform.persistence.configuration.dao;
 
 import org.geosdi.geoplatform.persistence.dao.GPGenericDAO;
-import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 
 /**
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
@@ -45,8 +45,8 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 public interface GPBaseSearchDAO<T extends Object> extends GPGenericDAO<T> {
 
     /**
-     * @return {@link FullTextEntityManager}
+     * @return {@link SearchSession}
      * @throws Exception
      */
-    FullTextEntityManager searchManager() throws Exception;
+    SearchSession searchSession() throws Exception;
 }

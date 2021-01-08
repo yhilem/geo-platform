@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -35,11 +35,11 @@
  */
 package org.geosdi.geoplatform.services.request.validator;
 
+import jakarta.validation.ConstraintViolation;
 import org.geosdi.geoplatform.hibernate.validator.support.GPI18NValidator;
-import org.geosdi.geoplatform.hibernate.validator.support.interpoletor.IGPI18NMessageInterpolator;
+import org.geosdi.geoplatform.hibernate.validator.support.interpolator.IGPI18NMessageInterpolator;
 import org.geosdi.geoplatform.hibernate.validator.support.request.GPI18NRequestValidator;
 
-import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 import static java.util.stream.Collectors.joining;

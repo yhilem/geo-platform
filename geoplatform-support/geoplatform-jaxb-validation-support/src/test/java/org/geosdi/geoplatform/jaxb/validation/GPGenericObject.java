@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -35,32 +35,23 @@
  */
 package org.geosdi.geoplatform.jaxb.validation;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.geosdi.geoplatform.jaxb.validation.hibernate.IGPJAXBHibernateValidator;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
+@Getter
+@Setter
+@ToString
 public class GPGenericObject implements IGPJAXBHibernateValidator.GPJAXBValidationModel {
 
     private static final long serialVersionUID = -8496743928041519447L;
     //
     @NotNull(message = "This value must not be null.")
     private String value;
-
-    /**
-     * @return {@link String}
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @param value
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

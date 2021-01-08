@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -33,20 +33,54 @@
  *   to your version of the library, but you are not obligated to do so. If you do not
  *   wish to do so, delete this exception statement from your version.
  */
-package org.geosdi.geoplatform.hibernate.validator.support.interpoletor;
+package org.geosdi.geoplatform.experimental.mongodb.spring.validate;
 
-import javax.annotation.Nullable;
-import javax.validation.MessageInterpolator;
-import java.util.Locale;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
+import org.springframework.data.mongodb.core.mapping.event.BeforeSaveEvent;
+
+import javax.annotation.Nonnull;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static javax.annotation.meta.When.NEVER;
 
 /**
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
-public interface IGPI18NMessageInterpolator extends MessageInterpolator {
+public class GPValidatingMongoEventListener extends AbstractMongoEventListener<Object> {
+
+    private static final Logger logger = LoggerFactory.getLogger(GPValidatingMongoEventListener.class);
+    //
+    private final Validator validator;
 
     /**
-     * @param theDefaultLocale
+     * @param theValidator
      */
-    void setDefaultLocale(@Nullable Locale theDefaultLocale);
+    protected GPValidatingMongoEventListener(@Nonnull(when = NEVER) Validator theValidator) {
+        checkArgument(theValidator != null, "The Parameter validator must not be null.");
+        this.validator = theValidator;
+    }
+
+    /**
+     * Captures {@link BeforeSaveEvent}.
+     *
+     * @param event will never be {@literal null}.
+     * @since 1.8
+     */
+    @Override
+    public void onBeforeSave(@Nonnull(when = NEVER) BeforeSaveEvent<Object> event) {
+        checkArgument(event != null, "The Parameter event must not be null.");
+        Object source = event.getSource();
+        logger.debug("@@@@@@@@@@@@@@@@@@@@@@@Validating object: {}", source);
+        Set violations = validator.validate(source);
+        if (!violations.isEmpty()) {
+            logger.info("############During object: {} validation violations found: {}", source, violations);
+            throw new ConstraintViolationException(violations);
+        }
+    }
 }

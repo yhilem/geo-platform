@@ -5,7 +5,7 @@
  *    http://geo-platform.org
  *   ====================================================================
  *
- *   Copyright (C) 2008-2020 geoSDI Group (CNR IMAA - Potenza - ITALY).
+ *   Copyright (C) 2008-2021 geoSDI Group (CNR IMAA - Potenza - ITALY).
  *
  *   This program is free software: you can redistribute it and/or modify it
  *   under the terms of the GNU General Public License as published by
@@ -38,17 +38,28 @@ package org.geosdi.geoplatform.experimental.mongodb.configuration.properties;
 import org.geosdi.geoplatform.experimental.mongodb.configuration.auth.MongoAuth;
 
 /**
- *
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
 public interface MongoBaseProperties extends MongoProperties {
-    
+
+    /**
+     * @param theMongoHost
+     */
     void setMongoHost(String theMongoHost);
-    
+
+    /**
+     * @param theMongoDatabaseName
+     */
     void setMongoDatabaseName(String theMongoDatabaseName);
-    
+
+    /**
+     * @param theMongoPort
+     */
     void setMongoPort(Integer theMongoPort);
-    
+
+    /**
+     * @param theMongoAut
+     */
     void setMongoAuth(MongoAuth theMongoAut);
 }
