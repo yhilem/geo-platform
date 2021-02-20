@@ -125,7 +125,7 @@ public abstract class GPAbstractJpaDAO<T extends Object, ID extends Serializable
         try {
             return stream(entities.spliterator(), FALSE)
                     .filter(Objects::nonNull)
-                    .map(e -> persist(e))
+                    .map(this::persist)
                     .collect(toList());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -135,15 +135,17 @@ public abstract class GPAbstractJpaDAO<T extends Object, ID extends Serializable
 
     /**
      * @param id
+     * @return {@link Integer}
+     * @throws GPDAOException
      */
     @Override
-    public void delete(ID id) throws GPDAOException {
+    public Integer delete(ID id) throws GPDAOException {
         checkArgument(id != null, "The Parameter ID must not be null.");
         try {
             CriteriaDelete<T> criteriaDelete = this.createCriteriaDelete();
             Root<T> root = criteriaDelete.from(super.getPersistentClass());
             criteriaDelete.where(this.criteriaBuilder().equal(root.get("id"), id));
-            this.entityManager.createQuery(criteriaDelete).executeUpdate();
+            return this.entityManager.createQuery(criteriaDelete).executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new GPDAOException(ex);
@@ -200,7 +202,7 @@ public abstract class GPAbstractJpaDAO<T extends Object, ID extends Serializable
             Root<T> root = criteriaQuery.from(this.persistentClass);
             criteriaQuery.select(root);
             return this.entityManager.createQuery(criteriaQuery)
-                    .setFirstResult(start)
+                    .setFirstResult((start == 0) ? 0 : ((start * end)))
                     .setMaxResults(end)
                     .getResultList();
         } catch (HibernateException ex) {

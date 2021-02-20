@@ -35,7 +35,12 @@
  */
 package org.geosdi.geoplatform.connector.wms.store;
 
+import org.geosdi.geoplatform.connector.server.request.GPWMSBoundingBox;
+import org.geosdi.geoplatform.connector.server.request.GPWMSGetMapBaseRequest;
+import org.geosdi.geoplatform.connector.server.request.WMSBoundingBox;
+import org.geosdi.geoplatform.connector.server.request.WMSGetMapBaseRequest;
 import org.geosdi.geoplatform.connector.server.v111.GPWMSDescribeLayerV111Request;
+import org.geosdi.geoplatform.connector.server.v111.GPWMSGetFeatureInfoV111Request;
 import org.geosdi.geoplatform.connector.server.v111.IGPWMSConnectorStoreV111;
 import org.geosdi.geoplatform.connector.server.v111.WMSGetCapabilitiesV111Request;
 import org.junit.BeforeClass;
@@ -47,8 +52,11 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.of;
 import static org.geosdi.geoplatform.connector.pool.builder.v111.GPWMSConnectorBuilderPoolV111.wmsConnectorBuilderPoolV111;
 import static org.geosdi.geoplatform.connector.server.config.GPPooledConnectorConfigBuilder.PooledConnectorConfigBuilder.pooledConnectorConfigBuilder;
+import static org.geosdi.geoplatform.connector.server.request.WMSFeatureInfoFormat.GML_AS_STRING;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 /**
@@ -73,7 +81,6 @@ public class GPWMSConnectorStoreSnipcPoolV111Test {
                         .build()).build();
     }
 
-    @Ignore
     @Test
     public void a_wmsGetCapabilitiesV111Test() throws Exception {
         WMSGetCapabilitiesV111Request wmsGetCapabilitiesRequest = wmsServerConnector.createGetCapabilitiesRequest();
@@ -93,6 +100,42 @@ public class GPWMSConnectorStoreSnipcPoolV111Test {
     public void c_wmsDescribeLayerV11Test() throws Exception {
         GPWMSDescribeLayerV111Request wmsDescribeLayerRequest = wmsServerConnector.createDescribeLayerRequest();
         logger.info("##########################WMS_DESCRIBE_LAYER_RESPONSE_V111 : {}\n", wmsDescribeLayerRequest
-                .withLayers("\tPNSRS:IT_sedi_ASL_2020").getResponse());
+                .withLayers("PNSRS:IT_sedi_ASL_2020").getResponse());
+    }
+
+    @Test
+    public void d_wmsGetFeatureInfoV111Test() throws Exception {
+        GPWMSGetFeatureInfoV111Request<Object> wmsGetFeatureInfoRequest = wmsServerConnector.createGetFeatureInfoRequest();
+        GPWMSBoundingBox wmsBoundinBox = new WMSBoundingBox(13.815994262695314, 40.72332345541451, 15.088348388671877, 40.99389273551914);
+        GPWMSGetMapBaseRequest wmsGetMapBaseRequest = new WMSGetMapBaseRequest(wmsBoundinBox, of("VULCANICO:CF_aree_attesa").collect(toSet()),
+                "EPSG:4326", "1853", "521");
+        logger.info("##################################WMS_GET_FEATURE_INFO_V111_RESPONSE : {}\n", wmsGetFeatureInfoRequest.withQueryLayers("VULCANICO:CF_aree_attesa")
+                .withWMSGetMapRequest(wmsGetMapBaseRequest)
+                .withFeatureCount(2)
+                .withInfoFormat(GML_AS_STRING).withX(487).withY(305).getResponse());
+    }
+
+    @Test
+    public void e_wmsGetFeatureInfoV111Test() throws Exception {
+        GPWMSGetFeatureInfoV111Request<Object> wmsGetFeatureInfoRequest = wmsServerConnector.createGetFeatureInfoRequest();
+        GPWMSBoundingBox wmsBoundinBox = new WMSBoundingBox(13.815994262695314, 40.72332345541451, 15.088348388671877, 40.99389273551914);
+        GPWMSGetMapBaseRequest wmsGetMapBaseRequest = new WMSGetMapBaseRequest(wmsBoundinBox, of("VULCANICO:VES_aree_attesa").collect(toSet()),
+                "EPSG:4326", "1853", "521");
+        logger.info("##################################WMS_GET_FEATURE_INFO_V111_RESPONSE : {}\n", wmsGetFeatureInfoRequest.withQueryLayers("VULCANICO:VES_aree_attesa")
+                .withWMSGetMapRequest(wmsGetMapBaseRequest)
+                .withFeatureCount(2)
+                .withInfoFormat(GML_AS_STRING).withX(487).withY(305).getResponse());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void f_wmsGetFeatureInfoV111Test() throws Exception {
+        GPWMSGetFeatureInfoV111Request<Object> wmsGetFeatureInfoRequest = wmsServerConnector.createGetFeatureInfoRequest();
+        GPWMSBoundingBox wmsBoundinBox = new WMSBoundingBox(13.815994262695314, 40.72332345541451, 15.088348388671877, 40.99389273551914);
+        GPWMSGetMapBaseRequest wmsGetMapBaseRequest = new WMSGetMapBaseRequest(wmsBoundinBox, of("VULCANICO:CF_zona rossa_maplite").collect(toSet()),
+                "EPSG:4326", "1853", "521");
+        logger.info("##################################WMS_GET_FEATURE_INFO_V111_RESPONSE : {}\n", wmsGetFeatureInfoRequest.withQueryLayers("VULCANICO:CF_zona rossa_maplite")
+                .withWMSGetMapRequest(wmsGetMapBaseRequest)
+                .withFeatureCount(2)
+                .withInfoFormat(GML_AS_STRING).withX(487).withY(305).getResponse());
     }
 }

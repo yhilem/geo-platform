@@ -47,14 +47,13 @@ import static javax.annotation.meta.When.NEVER;
  * @author Giuseppe La Scaleia - CNR IMAA geoSDI Group
  * @email giuseppe.lascaleia@geosdi.org
  */
-public interface GPWMSKeyValuePairBuilder<R> extends GPWMSKeyValuePair {
+public interface GPWMSKeyValuePairBuilder<R, KVPBuilder extends GPWMSKeyValuePairBuilder> extends GPWMSKeyValuePair {
 
     /**
      * @param theKeyValuePair
-     * @param <KVPBuilder>
      * @return {@link KVPBuilder}
      */
-    <KVPBuilder extends GPWMSKeyValuePairBuilder> KVPBuilder withKeyValuePair(@Nonnull(when = NEVER) String theKeyValuePair);
+     KVPBuilder withKeyValuePair(@Nonnull(when = NEVER) String theKeyValuePair);
 
     /**
      * @return {@link R}
@@ -62,7 +61,7 @@ public interface GPWMSKeyValuePairBuilder<R> extends GPWMSKeyValuePair {
      */
     R build() throws Exception;
 
-    abstract class GPWMSBaseKeyValuePairBuilder<R> implements GPWMSKeyValuePairBuilder<R> {
+    abstract class GPWMSBaseKeyValuePairBuilder<R, KVPBuilder extends GPWMSKeyValuePairBuilder> implements GPWMSKeyValuePairBuilder<R, KVPBuilder> {
 
         protected static final GPWMSRequestKvpReader wmsRequestKvpReader = new WMSRequestKvpReader();
         //
@@ -76,7 +75,7 @@ public interface GPWMSKeyValuePairBuilder<R> extends GPWMSKeyValuePair {
          * @return {@link KVPBuilder}
          */
         @Override
-        public <KVPBuilder extends GPWMSKeyValuePairBuilder> KVPBuilder withKeyValuePair(@Nonnull(when = NEVER) String theKeyValuePair) {
+        public KVPBuilder withKeyValuePair(@Nonnull(when = NEVER) String theKeyValuePair) {
             this.keyValuePair.set(theKeyValuePair);
             return self();
         }
@@ -92,10 +91,9 @@ public interface GPWMSKeyValuePairBuilder<R> extends GPWMSKeyValuePair {
         }
 
         /**
-         * @param <KVPBuilder>
          * @return {@link KVPBuilder}
          */
-        protected <KVPBuilder extends GPWMSKeyValuePairBuilder> KVPBuilder self() {
+        protected KVPBuilder self() {
             return (KVPBuilder) this;
         }
 
